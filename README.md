@@ -28,8 +28,8 @@ Create .env in backend folder:
 textOPENROUTER_API_KEY=sk-or-v1-...
 Deployment (Live Links)
 
-Frontend: Deployed on Vercel → https://your-app.vercel.app
-Backend: Deployed on Render → https://your-backend.onrender.com
+Frontend: Deployed on Vercel → https://explain-my-plan-kalnet-assignment-nsq5ppasw.vercel.app/
+Backend: Deployed on Render → https://explain-my-plan-kalnet-assignment.onrender.com
 
 Prompt Design Explanation
 I designed a single, highly structured prompt that forces the LLM to return only valid JSON with exact keys required by the assignment. I embedded the Clarity Score calculation logic directly inside the prompt and used response_format: { type: "json_object" } for reliability. Temperature set to 0.3 for consistent output.
