@@ -15,7 +15,7 @@ function App() {
     if (!idea.trim() || loading) return;
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:5000/analyze", { idea });
+      const res = await axios.post("https://your-backend.onrender.com/analyze", { idea });
       const result = res.data;
       setParsed(result);
       if (result["Clarity Score (0-100)"] >= 80) {
