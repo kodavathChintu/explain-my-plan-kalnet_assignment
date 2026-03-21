@@ -18,6 +18,7 @@ const openai = new OpenAI({
 
 app.post("/analyze", async (req, res) => {
     try {
+        console.log("Received request:", req.body);
         const { idea } = req.body;
 
         if (!idea || idea.trim().length < 15) {
