@@ -15,7 +15,7 @@ function App() {
     if (!idea.trim() || loading) return;
     setLoading(true);
     try {
-      const res = await axios.post("https://explain-my-plan-kalnet-assignment.onrender.com/analyze", { idea });
+      const res = await axios.post("https://explain-my-plan-kalnet-assignment.onrender.com/analyze", { idea },{ timeout: 90000 });
       const result = res.data;
       setParsed(result);
       if (result["Clarity Score (0-100)"] >= 80) {
