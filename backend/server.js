@@ -27,33 +27,35 @@ app.post("/analyze", async (req, res) => {
             });
         }
 
-        const prompt = `
-You are an expert planner and clarity coach.
+const prompt = `
+        Return valid JSON only. You are an expert planner and clarity coach.
 
-Analyze the user's idea and return ONLY valid JSON (no explanations).
+Analyze the user's idea and return ONLY valid JSON (no explanations, no markdown, no extra text).
 
-Use this EXACT structure:
+Use this EXACT JSON structure:
+        {
+        "Goal": "Clear, specific goal",
+        "Method": "Overall approach",
+        "Steps": ["Step 1", "Step 2", "Step 3", "Step 4", "Step 5"],
+        "Timeline": "Realistic timeline or 'Not specified - suggest one'",
+        "Missing Elements": ["Gap 1", "Gap 2", "Gap 3"],
+        "Simplified Version": "One clear paragraph",
+        "Actionable Next Steps": ["Next step 1", "Next step 2", "Next step 3", "Next step 4", "Next step 5"],
+        "Clarity Score (0-100)": number
+        }
 
-{
-  "Goal": "Clear, specific goal",
-  "Method": "Overall approach",
-  "Steps": ["Step 1", "Step 2", "Step 3", "Step 4", "Step 5"],
-  "Timeline": "Realistic timeline or 'Not specified - suggest one'",
-  "Missing Elements": ["Gap 1", "Gap 2", "Gap 3"],
-  "Simplified Version": "One clear paragraph",
-  "Actionable Next Steps": ["Next step 1", "Next step 2", "Next step 3", "Next step 4", "Next step 5"],
-  "Clarity Score (0-100)": number
-}
+        Clarity Score Calculation (be STRICT and HONEST - do NOT be generous):
+        Score from 0 to 100 using these EXACT weights. Be realistic — most vague ideas should score below 40.
 
-Clarity Score Calculation (be honest):
-- Goal clarity (0-25)
-- Steps quality (0-25)
-- Timeline presence (0-20)
-- Missing elements identified (0-15)
-- Overall completeness (0-15)
+        - Goal clarity (0–25): only full points if goal is specific, measurable, and realistic. Vague goal = 10–15 max.
+        - Defined steps (0–25): only full points if there are at least 4–5 concrete, sequential steps. No steps or generic steps = 0–8.
+        - Timeline presence (0–20): full points only if realistic timeline is explicitly stated. "Not specified" = 0–4 max.
+        - Overall completeness (0–30): heavy penalty if major parts are missing (resources, risks, monetization, validation, etc.). Very incomplete plan = 5–12 max.
 
-Idea: ${idea}
-`;
+        Example: Input "I want to start a SaaS company" → Goal: 18/25, Steps: 0/25, Timeline: 0/20, Completeness: 8/30 → Total ~26/100
+
+        Idea: ${idea}
+        `;
 
         const completion = await openai.chat.completions.create({
             model: "openai/gpt-3.5-turbo",
